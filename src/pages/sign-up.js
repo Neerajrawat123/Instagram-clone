@@ -4,7 +4,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import { auth, firestore } from '../lib/firebase';
+import {  firestore } from '../lib/firebase';
 import { isValidEmail } from '../helper/utility';
 import { AuthContext } from '../context/authcontext';
 import { AiFillEye as EyeIcon } from 'react-icons/ai';
@@ -24,7 +24,7 @@ function SignUp() {
   const [disabled, setDisabled] = useState(true);
   const [showPassword, setShowPassword] = useState(true);
 
-  const { user, signUp } = useContext(AuthContext);
+  const {  signUp } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const isInvalid = email === '' || password === '';
@@ -56,26 +56,22 @@ function SignUp() {
       }
       if (user.empty) {
         const user = await signUp(email, password, username, fullname);
-       if ( user ) {
+        if (user) {
           setEmail('');
           setPassword('');
-          setFullname('')
-          setUsername('')
+          setFullname('');
+          setUsername('');
           setFormLoading(false);
           navigate('/');
-        }
-        else{
+        } else {
           setEmail('');
           setPassword('');
-          setFullname('')
-          setUsername('')
+          setFullname('');
+          setUsername('');
           setFormLoading(false);
-          setErrorMsg('email is already register')
-
-
+          setErrorMsg('email is already register');
         }
       }
-     
     }
   };
 
@@ -157,7 +153,7 @@ function SignUp() {
             />
 
             <button
-              disabled={isInvalid}
+              disabled={isInvalid && disabled}
               type='submit'
               className={`bg-blue-medium text-white w-full rounded h-8 font-bold
           ${isInvalid && 'opacity-50'}`}

@@ -10,7 +10,7 @@ import {firestore} from '../lib/firebase'
 function Post() {
   const {postid} = useParams()
 const [post, setPost] = useState(null)
-const [loading, setLoading] = useState(false)
+const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
@@ -19,6 +19,7 @@ const [loading, setLoading] = useState(false)
       if (response) {
         setLoading(false)
         setPost({id:response.id, ...response.data()})
+        console.log(post?.user?.photoURL)
 
         
       } else {
@@ -30,7 +31,7 @@ const [loading, setLoading] = useState(false)
   
     getData()
   }, [postid])
-  console.log(postid)
+
   
 
   return (

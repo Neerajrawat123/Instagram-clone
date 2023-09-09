@@ -70,15 +70,8 @@ function AuthProvider({ children }) {
           console.log(user);
         }
       );
-      await setDoc(
-        doc(firestore, 'user/bZdyCDBdUjgxFxhXLRBGzQh05k12'),
-        {
-          followedBy: arrayUnion(user.uid),
-        },
-        {
-          merge: true,
-        }
-      );
+     
+      ;
       await setDoc(doc(firestore, 'user', `${user?.uid}`), {
         userId: user?.uid,
         biography: 'Hey there! I am new in this Instagram clone.',
@@ -107,6 +100,7 @@ function AuthProvider({ children }) {
   };
 
   console.log(user)
+
 
 
   return (

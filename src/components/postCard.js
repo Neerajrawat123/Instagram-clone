@@ -39,13 +39,14 @@ import {
 function PostCard({ post }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [isCommentSecOpen, setIsCommentSecOpen] = useState(false);
+
   const [commentInput, setCommentInput] = useState('');
   const [commentsArr, setCommentArr] = useState([]);
-  const [limitNum, setLimitNum] = useState(2)
+  const [limitNum, setLimitNum] = useState(2);
 
   const { user } = useContext(AuthContext);
   const swiper = useSwiper();
-  console.log(post?.id);
 
   const likePost = async () => {
     const postRef = doc(firestore, `posts/${post?.id}`);
@@ -144,31 +145,35 @@ function PostCard({ post }) {
     setCommentInput('');
   };
 
+  const showComments =() =>{
+    setLimitNum(limitNum+3)
+    setIsCommentSecOpen(!isCommentSecOpen)
+  }
+
   useEffect(() => {
-    const getComments = async()=>{
+    const getComments = async () => {
       const q = query(
-        collection(firestore,`posts/${post?.id}/commentsCollection`),
-        limit(limitNum)
+        collection(firestore, `posts/${post?.id}/commentsCollection`),
+        limit(limitNum),
       );
-      onSnapshot(q,
-        (docs)=>{
-          const comments = docs.docs.map((doc) =>({
+      onSnapshot(
+        q,
+        (docs) => {
+          const comments = docs.docs.map((doc) => ({
             ...doc.data(),
-            id:doc?.id
-          }))
-          setCommentArr(comments)
+            id: doc?.id,
+          }));
+          setCommentArr(comments);
         },
-      (err)=>{
-        console.log(err)
-      }
-        )
-    }
-  
-    return () => {
-      getComments()
-    }
-  }, [limitNum])
-  
+        (err) => {
+          console.log(err);
+        },
+      );
+    };
+
+    getComments();
+  }, [limitNum]);
+
   return (
     <div
       animate={{ opacity: 1 }}
@@ -177,20 +182,23 @@ function PostCard({ post }) {
       className='sm:mb-6 bg-white sm:border-[1px] rounded'
     >
       <div className='flex gap-3 items-center p-2 flex-col justify-between'>
-        <div className="w-full flex justify-between">
-
-        <Link to={`/${post?.user?.username}`}>
-          <img src={post?.user?.photoURL || 'images/avatars/default.png'} 
-          className='w-12'/>
-        </Link>
-        <div className='flex-grow p-1'>
-          <Link to={`/${post?.user?.username}`} className='font-semiBold'>
-            {post?.user?.username}
+        <div className='w-full flex justify-between'>
+          <Link to={`/profile/${post?.user?.username}`}>
+            <LazyLoadImage src={post.user?.photoURL} className='w-12' />
+            {/* <img src={post?.user?.photoURL}  */}
+            {/* className='w-12'/> */}
           </Link>
-        </div>
-        <button>
-          <PostMenuIcon />
-        </button>
+          <div className='flex-grow p-1'>
+            <Link
+              to={`profile/${post?.user?.username}`}
+              className='font-semiBold'
+            >
+              {post?.user?.username}
+            </Link>
+          </div>
+          <button>
+            <PostMenuIcon />
+          </button>
         </div>
         <Link to={`/post/${post?.id}`}>
           {!post?.carouselMedia && (
@@ -271,10 +279,10 @@ function PostCard({ post }) {
           </div>
           {commentsArr?.length > 0 && (
             <div
-              onClick={() => setLimitNum(limitNum + 3)}
+              onClick={() => {showComments()}}
               className='block text-xs text-slate-600 cursor-pointer'
             >
-              view more comments
+            view {isCommentSecOpen?'less':'more'} comments
             </div>
           )}
         </div>
@@ -309,19 +317,21 @@ function PostCard({ post }) {
           ))}
         </div>
       </div>
-      <div className="sm:block sm:border-t-[1px] text-slate-900 p-1 border-slate-500/30">
+      <div className='sm:block sm:border-t-[1px] text-slate-900 p-1 border-slate-500/30'>
         <form onSubmit={commentSubmit}>
-          <div className="w-full flex  gap-3">
-            <SmileIcon size={24}/>
-            <input type="text" 
-            className='w-full text=sm outline-none font-light'
-            placeholder='Add  a comment'
-            value={commentInput}
-            onChange={(e)=> setCommentInput(e.target.value)} />
-             <button
-              type="submit"
+          <div className='w-full flex  gap-3'>
+            <SmileIcon size={24} />
+            <input
+              type='text'
+              className='w-full text=sm outline-none font-light'
+              placeholder='Add  a comment'
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+            />
+            <button
+              type='submit'
               disabled={commentInput.length <= 0}
-              className="text-blue-500 font-semibold text-sm"
+              className='text-blue-500 font-semibold text-sm'
             >
               Post
             </button>

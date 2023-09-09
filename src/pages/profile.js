@@ -5,11 +5,12 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AuthContext } from '../context/authcontext';
 import {useParams,useNavigate} from 'react-router-dom'
 import {query,
-collection, where,onSnapshot,docs, getDoc,doc} from 'firebase/firestore'
+collection, where,onSnapshot,docs, getDoc,doc,setDoc, arrayUnion, arrayRemove} from 'firebase/firestore'
 import { firestore, storage } from "../lib/firebase";
 import { MdVerified as VerifiedIcon } from "react-icons/md";
 import { MdAddAPhoto as EditProfileIcon } from "react-icons/md";
 import ProfilePostCard from '../components/profilePostCard'
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 
 function Profile() {
@@ -76,6 +77,71 @@ function Profile() {
     }
   
   }, [postIds])
+
+  const changeProfileImg =  (ids,downloadURL) => {
+    const readsIds=  (ids) =>  ids.map((id) => {
+      setDoc(doc(firestore,'posts',`${id}`),{
+        user :{
+
+          photoURL: downloadURL
+        }
+      },
+      {merge:true})
+      })
+      readsIds(ids)
+    }
+
+  
+
+  const followProfile = () =>{
+    if (!user) navigate('/login');
+    if (user) {
+      setDoc(
+        doc(firestore, `user/${user?.uid}`),
+        {
+          following: arrayUnion(user?.uid)
+        }
+        ,{merge:true}
+
+      )
+      setDoc(
+        doc(firestore, `user/${profileUser?.id}`),
+        {
+          followedBy: arrayUnion(user?.uid)
+        }
+        , 
+        {merge:true}
+      )
+      
+    }
+  }
+
+  const unFollowProfile = () =>{
+    if (!user) navigate('/login');
+    if (user) {
+      setDoc(
+        doc(firestore, `user/${user?.uid}`),
+        {
+          following: arrayRemove(user?.uid)
+        },
+        {merge:true}
+
+      )
+      setDoc(
+        doc(firestore, `user/${profileUser?.id}`),
+        {
+          followedBy: arrayRemove(user?.uid)
+        },
+        {merge:true}
+
+      )
+      
+    }
+  }
+
+    
+  
+  
   
   console.log(profileUser)
   return (
@@ -98,7 +164,7 @@ function Profile() {
                         <input
                           type="file"
                           name="profile-image"
-                          className="h-full w-full"
+                          className="h-full w-full text-center"
                           id="profile-image"
                           ref={profilePic}
                           onChange={(e) => {
@@ -132,6 +198,8 @@ function Profile() {
                                       },
                                       { merge: true }
                                     );
+                                    changeProfileImg(postIds,downloadURL)
+                                    
                                   }
                                 );
                               }
@@ -171,8 +239,8 @@ function Profile() {
                       <button
                         className={`${
                           profileUser?.followedBy?.includes(user?.uid)
-                            ? "bg-gray-400"
-                            : "bg-blue-500"
+                            ? "bg-gray-primary"
+                            : "bg-blue-medium"
                         } px-4 py-1 
                   text-white font-semibold text-sm rounded block text-center 
                   sm:inline-block`}
@@ -277,7 +345,7 @@ function Profile() {
                 )}
                 <motion.div
                   layout
-                  className="grid grid-cols-3 md:gap-8 gap-1 md:p-2 p-1"
+                  className="grid border grid-cols-3 md:gap-8 gap-1 md:p-2 p-1"
                 >
                   {posts?.reverse().map((post, index) => (
                     <ProfilePostCard key={index} post={post} />

@@ -30,7 +30,7 @@ function Explore() {
     })
     }
   
-    return getPosts()
+    getPosts()
   }, [limitNum])
   
   return (

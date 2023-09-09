@@ -2,12 +2,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import { auth, firestore } from '../lib/firebase';
 import { isValidEmail } from '../helper/utility';
 import { AuthContext } from '../context/authcontext';
-import { AiFillEye as EyeIcon } from "react-icons/ai";
-import { AiFillEyeInvisible as EyeInvisibleIcon } from "react-icons/ai";
-import { ImSpinner3 as SpinnerIcon } from "react-icons/im";
+import { AiFillEye as EyeIcon } from 'react-icons/ai';
+import { AiFillEyeInvisible as EyeInvisibleIcon } from 'react-icons/ai';
+import { ImSpinner3 as SpinnerIcon } from 'react-icons/im';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -17,7 +16,7 @@ function SignIn() {
   const [disabled, setDisabled] = useState(true);
   const [showPassword, setShowPassword] = useState(true);
 
-  const { user, login } = useContext(AuthContext);
+  const {login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const isInvalid = email === '' || password === '';
@@ -91,7 +90,7 @@ function SignIn() {
               <div className='relative'>
                 <input
                   type={showPassword ? 'password' : 'text'}
-                  className='text-xs p-2 border-[1px] rounded bg-gray-200/10 w-full border-gray-300'
+                  className='text-xs p-2  rounded border border-gray-primary bg-gray-200/10 w-full border-gray-300 mb-2'
                   placeholder='Password'
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
@@ -109,24 +108,24 @@ function SignIn() {
                 )}
               </div>
             </div>
-           
+
             <button
               disabled={isInvalid}
               type='submit'
               className={`bg-blue-medium text-white w-full rounded h-8 font-bold
           ${isInvalid && 'opacity-50'}`}
             >
-            {formLoading ?(<SpinnerIcon className="w-3 h-3 animate-spin my-1 mx-auto" />
-          ) : (
-            'login'
-          )}
+              {formLoading ? (
+                <SpinnerIcon className='w-3 h-3 animate-spin my-1 mx-auto' />
+              ) : (
+                'login'
+              )}
             </button>
           </form>
         </div>
         <div className='flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary'>
           <p className='text-sm'>
-            Don't have an account?
-            {' '}
+            Don't have an account?{' '}
             <Link to={ROUTES.SIGN_UP} className='font-bold text-blue-medium'>
               Sign up
             </Link>
