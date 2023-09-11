@@ -40,6 +40,7 @@ function Header() {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  console.log(user?.username)
 
   const uploadImage = (e) =>{
     e.preventDefault();
@@ -67,7 +68,6 @@ function Header() {
                 uid: user?.uid,
               },
             });
-            console.log(postDoc?.id);
             setDoc(
               doc(firestore, `user/${user?.uid}`),
               {
@@ -76,22 +76,22 @@ function Header() {
               {
                 merge: true,
               }
-            ).then(() => {
-              setModelOpen(false);
-              setUploading(false);
-              setUploadComplete(true);
-              setCaption("");
-              setImages(null);
-              setUploadComplete(false);
-              setPercentage(0);
-            });
+              ).then(() => {
+                setModelOpen(false);
+                setUploading(false);
+                setUploadComplete(true);
+                setCaption("");
+                setImages(null);
+                setUploadComplete(false);
+                setPercentage(0);
+              });
+            }
+            );
           }
-        );
-      }
-    );
-    
-
-  }
+          );
+          
+          
+        }
   return (
     <>
     <header className="fixed top-0 left-0 w-full bg-white border-b-[1px] z-50">
@@ -155,7 +155,7 @@ function Header() {
                       <ul className="flex flex-col p-3 justify-center gap-2">
                         <li onClick={() => setMenuOpen(!menuOpen)}>
                           <Link
-                            to={`/${user?.username}`}
+                            to={`/profile/${user?.username}`}
                             className="flex items-center gap-1"
                           >
                             <div>

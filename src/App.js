@@ -12,6 +12,8 @@ const Profile = lazy(() => import('./pages/profile'));
 const NotFound = lazy(() => import('./pages/not-found'));
 const Reels = lazy(()=> import('./pages/reels'))
 const Explore = lazy(()=> import('./pages/explore'))
+const Post = lazy(()=> import('./pages/post'))
+
 
 
 function App() {
@@ -26,6 +28,9 @@ function App() {
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.EXPLORE} element={<Explore />} />
         <Route path={ROUTES.REELS} element={<Reels />} />
+        <Route path={ROUTES.POST} element={<Post />} />
+
+
 
 
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />

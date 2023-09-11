@@ -106,6 +106,8 @@ function AuthProvider({ children }) {
     return user;
   };
 
+  console.log(user)
+
 
   return (
     <AuthContext.Provider value={{ user, login, logout, signUp }}>

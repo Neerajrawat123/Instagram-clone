@@ -5,12 +5,12 @@ import { Triangle } from 'react-loader-spinner';
 function Loader() {
   return (
     <Triangle
-      height='80'
-      width='80'
+      height='500'
+      width='500'
       color='#4fa94d'
       ariaLabel='triangle-loading'
       wrapperStyle={{}}
-      wrapperClassName=''
+      wrapperClassName='m-auto'
       visible={true}
     />
   );

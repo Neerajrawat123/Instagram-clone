@@ -192,7 +192,7 @@ function PostCard({ post }) {
           <PostMenuIcon />
         </button>
         </div>
-        <Link to={`/p/${post?.id}`}>
+        <Link to={`/post/${post?.id}`}>
           {!post?.carouselMedia && (
             <div className='relative aspect-square'>
               <LazyLoadImage

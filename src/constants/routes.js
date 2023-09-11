@@ -5,4 +5,6 @@ export const EXPLORE = '/explore';
 export const REELS = '/reels';
 
 export const PROFILE = '/profile/:username';
+export const POST = '/post/:postid';
+
 export const NOT_FOUND = '*';
