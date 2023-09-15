@@ -40,7 +40,6 @@ function Header() {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  console.log(user?.username);
 
   const uploadImage = (e) => {
     e.preventDefault();

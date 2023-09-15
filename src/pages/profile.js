@@ -39,7 +39,7 @@ function Profile() {
     const getData = async () => {
       const userQuery = query(
         collection(firestore, 'user'),
-        where('username', '==', username),
+        where('username', '==', username)
       );
       onSnapshot(userQuery, (users) => {
         console.log(users);
@@ -70,17 +70,18 @@ function Profile() {
     };
 
     if (postIds?.length > 0) {
-      const getdata = async () => {
+      const getPosts = async () => {
         try {
           const response = await readIds(postIds);
           if (response) {
             setPosts(response);
+            console.log('kfsd')
           }
         } catch (err) {
           console.log(err);
         }
       };
-      getdata();
+      getPosts();
     }
   }, [postIds]);
 
@@ -139,6 +140,7 @@ function Profile() {
       );
     }
   };
+  console.log(posts)
 
   return (
     <div>
@@ -187,14 +189,14 @@ function Profile() {
                                       'File available at',
                                       downloadURL,
                                     );
-                                    setDoc(
-                                      doc(firestore, `user/${user?.uid}`),
-                                      {
-                                        photoURL: downloadURL,
-                                      },
-                                      { merge: true },
-                                    );
-                                    changeProfileImg(postIds, downloadURL);
+                                    // setDoc(
+                                    //   doc(firestore, `user/${user?.uid}`),
+                                    //   {
+                                    //     photoURL: downloadURL,
+                                    //   },
+                                    //   { merge: true },
+                                    // );
+                                    // changeProfileImg(postIds, downloadURL);
                                   },
                                 );
                               },
@@ -236,11 +238,11 @@ function Profile() {
                         } px-4 py-1 
                   text-white font-semibold text-sm rounded block text-center 
                   sm:inline-block`}
-                        onClick={
-                          profileUser?.followedBy?.includes(user?.uid)
+                        onClick={()=>
+                         { profileUser?.followedBy?.includes(user?.uid)
                             ? unFollowProfile
                             : followProfile
-                        }
+                         }}
                       >
                         {profileUser?.followedBy?.includes(user?.uid)
                           ? 'Followed'
@@ -339,7 +341,7 @@ function Profile() {
                   layout
                   className='grid border grid-cols-3 md:gap-8 gap-1 md:p-2 p-1'
                 >
-                  {posts?.reverse().map((post, index) => (
+                  {posts?.map((post, index) => (
                     <ProfilePostCard key={index} post={post} />
                   ))}
                 </motion.div>

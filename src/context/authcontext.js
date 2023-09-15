@@ -41,7 +41,10 @@ function AuthProvider({ children }) {
         }
       });
     };
-    getUser();
+    if (loading) {
+      
+      getUser();
+    }
   }, [user]);
   const login = async (email, password) => {
     try {
@@ -99,10 +102,12 @@ function AuthProvider({ children }) {
     setUser(null);
     return user;
   };
+  console.log(user)
 
 
+  
   return (
-    <AuthContext.Provider value={{ user, login, logout, signUp }}>
+    <AuthContext.Provider value={{ user , login, logout, signUp }}>
       {loading || children}
     </AuthContext.Provider>
   );

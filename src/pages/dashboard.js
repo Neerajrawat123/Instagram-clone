@@ -70,6 +70,8 @@ function Dashboard() {
     suggestUsers();
   }, []);
 
+ 
+
   return (
     <>
       <Header />
@@ -86,7 +88,6 @@ function Dashboard() {
               className="bg-blue-medium hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             >
               Load More
-              <SpinnerIcon className='w-3 h-3 animate-spin my-1 mx-auto' />
             </button>
           </div>
           {posts?.length === 0 && (
