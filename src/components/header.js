@@ -132,7 +132,7 @@ function Header() {
                 <NavLink to='/explore'>
                   <ExploreIcon size={20} />
                 </NavLink>
-               
+
                 {user ? (
                   <div
                     className='relative cursor-pointer'

@@ -74,7 +74,7 @@ function Dashboard() {
     <>
       <Header />
       <div className='flex md:mt-14 max-w-4xl gap-2 mx-auto mb-8 '>
-        <div className='w-full md:w-[70%]'>
+        <div className='w-full md:w-3/4'>
           <div>
             {posts?.map((post) => (
               <PostCard post={post} key={post?.id} />
@@ -95,7 +95,7 @@ function Dashboard() {
             </div>
           )}
         </div>
-        <div className='md:mt-7 md:block md:w-[30%] p-3'>
+        <div className='hidden md:mt-7 md:block md:w-[30%] p-3'>
           <div className='flex items-center justify-between w-full gap-2'>
             <div>
               <img

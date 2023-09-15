@@ -1,3 +1,5 @@
+/** @format */
+
 import { createContext, useEffect, useMemo, useState } from 'react';
 import {
   addDoc,
@@ -39,18 +41,18 @@ function AuthProvider({ children }) {
         }
       });
     };
-    return getUser();
-  }, []);
+    getUser();
+  }, [user]);
   const login = async (email, password) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-     
+
       await setDoc(
         doc(firestore, 'user', `${user?.uid}`),
         {
           lastLogin: serverTimestamp(),
         },
-        { merge: true }
+        { merge: true },
       );
       setUser(user);
       return user;
@@ -68,10 +70,9 @@ function AuthProvider({ children }) {
         password,
         (user) => {
           console.log(user);
-        }
+        },
       );
-     
-      ;
+
       await setDoc(doc(firestore, 'user', `${user?.uid}`), {
         userId: user?.uid,
         biography: 'Hey there! I am new in this Instagram clone.',
@@ -98,9 +99,6 @@ function AuthProvider({ children }) {
     setUser(null);
     return user;
   };
-
-  console.log(user)
-
 
 
   return (
