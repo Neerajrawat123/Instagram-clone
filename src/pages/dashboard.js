@@ -75,7 +75,7 @@ function Dashboard() {
   return (
     <>
       <Header />
-      <div className='flex md:mt-14 max-w-4xl gap-2 mx-auto mb-8 '>
+      <div className='flex mt-14 max-w-4xl gap-2 mx-auto mb-8 '>
         <div className='w-full md:w-3/4'>
           <div>
             {posts?.map((post) => (
