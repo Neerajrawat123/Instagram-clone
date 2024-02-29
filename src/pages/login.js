@@ -13,7 +13,6 @@ function SignIn() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [formLoading, setFormLoading] = useState(false);
-  const [disabled, setDisabled] = useState(true);
   const [showPassword, setShowPassword] = useState(true);
 
   const {login } = useContext(AuthContext);
@@ -51,23 +50,20 @@ function SignIn() {
     }
   };
 
-  useEffect(() => {
-    setDisabled(!(email.length > 0 && password.length > 0));
-  }, [email, password]);
-
   return (
-    <div className='container flex mx-auto max-w-screen-md items-center h-screen'>
-      <div className='flex w-3/5 hidden sm:block'>
+    <div className='container flex mx-auto  items-center justify-center max-h-screen'>
+      <div className='flex w-2/5 h-2/3 sm:block '>
         <img
-          src='/images/iphone-with-profile.jpg'
+          src='/images/R.png'
           alt='iPhone with Instagram app'
+          className=' w-full object-contain'
         />
       </div>
-      <div className='flex flex-col w-full sm:w-2/5 p-4'>
-        <div className='flex flex-col items-center bg-white p-4 border border-gray-primary mb-4 rounded'>
+      <div className='flex flex-col w-full sm:w-2/5 p-4 h-3/4 '>
+        <div className='flex flex-col items-center bg-white p-2 border border-gray-primary mb-4 rounded shadow-lg'>
           <h1 className='flex justify-center w-full'>
             <img
-              src='/images/logo.png'
+              src='/images/logo-full.png'
               alt='Instagram'
               className='mt-2 w-6/12 mb-4'
             />
@@ -112,7 +108,7 @@ function SignIn() {
             <button
               disabled={isInvalid}
               type='submit'
-              className={`bg-blue-medium text-white w-full rounded h-8 font-bold
+              className={`bg-blue-medium text-white w-full rounded h-8 mt-3 font-bold
           ${isInvalid && 'opacity-50'}`}
             >
               {formLoading ? (
@@ -123,7 +119,7 @@ function SignIn() {
             </button>
           </form>
         </div>
-        <div className='flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary'>
+        <div className='flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary shadow-md'>
           <p className='text-sm'>
             Don't have an account?{' '}
             <Link to={ROUTES.SIGN_UP} className='font-bold text-blue-medium'>

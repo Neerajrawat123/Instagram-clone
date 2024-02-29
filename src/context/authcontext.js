@@ -46,9 +46,13 @@ function AuthProvider({ children }) {
       getUser();
     }
   }, [user]);
+
+  // this is login handler
+
   const login = async (email, password) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+      // firebase auth api
 
       await setDoc(
         doc(firestore, 'user', `${user?.uid}`),
@@ -57,6 +61,7 @@ function AuthProvider({ children }) {
         },
         { merge: true },
       );
+
       setUser(user);
       return user;
     } catch (error) {
@@ -102,7 +107,6 @@ function AuthProvider({ children }) {
     setUser(null);
     return user;
   };
-  console.log(user)
 
 
   

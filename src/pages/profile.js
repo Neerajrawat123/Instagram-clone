@@ -42,9 +42,9 @@ function Profile() {
         where('username', '==', username)
       );
       onSnapshot(userQuery, (users) => {
-        console.log(users);
+        console.log(users)
         if (!users.empty) {
-          setPostIds(users?.docs[0]?.data()?.posts);
+          setPostIds( users?.docs[0]?.data()?.posts || []);
           setProfileUser({ id: users.docs[0].id, ...users?.docs[0]?.data() });
           setIsLoading(false);
           setNoUser(false);
@@ -52,8 +52,6 @@ function Profile() {
         }
         if (users.empty) {
           setProfileUser(null);
-          // console.log(noUser);
-          // console.log({ id: users.docs[0].id, ...users?.docs[0]?.data() });
           setIsLoading(false);
           setNoUser(true);
         }
@@ -61,6 +59,7 @@ function Profile() {
     };
     getData();
   }, [username]);
+  console.log(profileUser, user)
 
   useEffect(() => {
     const readIds = async (ids) => {
@@ -75,7 +74,6 @@ function Profile() {
           const response = await readIds(postIds);
           if (response) {
             setPosts(response);
-            console.log('kfsd')
           }
         } catch (err) {
           console.log(err);
@@ -101,7 +99,8 @@ function Profile() {
     readsIds(ids);
   };
 
-  const followProfile = () => {
+  const followProfile= () => {
+    console.log('working')
     if (!user) navigate('/login');
     if (user) {
       setDoc(
@@ -140,8 +139,8 @@ function Profile() {
       );
     }
   };
-  console.log(posts)
-
+  
+  
   return (
     <div>
       <Header />
@@ -152,9 +151,9 @@ function Profile() {
               <header className='flex flex-wrap items-center p-4 md:py-8'>
                 <div className='md:w-3/12 md:ml-16'>
                   {/* profile image */}
-                  <div className='relative group w-20 h-20 md:w-40 md:h-40 object-cover overflow-hidden rounded-full'>
+                  <div className='relative group w-20 h-20 md:w-40 md:h-40 object-cover  overflow-hidden rounded-full'>
                     {profileUser?.id === user?.uid && (
-                      <div className='absolute cursor-pointer opacity-0 group-hover:opacity-100 duration-75 transition-all top-0 left-0 h-full w-full bg-black-light flex items-center justify-center text-2xl md:text-4xl text-white aspect-square'>
+                      <div className='absolute flex flex-col cursor-pointer opacity-0 group-hover:opacity-100 duration-75 transition-all top-0 left-0 h-full w-full bg-black-light  items-center justify-center text-2xl md:text-4xl text-white aspect-square'>
                         <EditProfileIcon
                           htmlFor='profile-image'
                           onClick={() => profilePic.current.click()}
@@ -162,11 +161,12 @@ function Profile() {
                         <input
                           type='file'
                           name='profile-image'
-                          className='h-full w-full text-center'
+                          className='h-1/2 w-full text-sm hidden'
                           id='profile-image'
                           ref={profilePic}
                           onChange={(e) => {
                             const file = e.target.files[0];
+                            console.log(postIds)
                             const storageRef = ref(
                               storage,
                               `users/${user?.uid}/profilePic.png`,
@@ -189,14 +189,14 @@ function Profile() {
                                       'File available at',
                                       downloadURL,
                                     );
-                                    // setDoc(
-                                    //   doc(firestore, `user/${user?.uid}`),
-                                    //   {
-                                    //     photoURL: downloadURL,
-                                    //   },
-                                    //   { merge: true },
-                                    // );
-                                    // changeProfileImg(postIds, downloadURL);
+                                    setDoc(
+                                      doc(firestore, `user/${user?.uid}`),
+                                      {
+                                        photoURL: downloadURL,
+                                      },
+                                      { merge: true },
+                                    );
+                                    changeProfileImg(postIds, downloadURL);
                                   },
                                 );
                               },
@@ -238,11 +238,12 @@ function Profile() {
                         } px-4 py-1 
                   text-white font-semibold text-sm rounded block text-center 
                   sm:inline-block`}
-                        onClick={()=>
-                         { profileUser?.followedBy?.includes(user?.uid)
+                        onClick={
+                         
+                          profileUser?.followedBy?.includes(user?.uid)
                             ? unFollowProfile
                             : followProfile
-                         }}
+                         }
                       >
                         {profileUser?.followedBy?.includes(user?.uid)
                           ? 'Followed'
@@ -333,8 +334,8 @@ function Profile() {
                   </li>
                 </ul>
                 {posts?.length === 0 && (
-                  <div className='flex items-center justify-center h-screen'>
-                    <div className='text-center'>No posts yet</div>
+                  <div className='flex  justify-center h-screen'>
+                    <div className='text-center text-2xl mt-8'>No posts yet</div>
                   </div>
                 )}
                 <motion.div
